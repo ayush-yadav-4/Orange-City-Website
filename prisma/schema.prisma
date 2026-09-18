@@ -1,0 +1,285 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Category {
+  car
+  bike
+  inverter
+  truck
+  industrial
+  ups
+}
+
+enum BatteryType {
+  flat
+  tubular
+  vrla
+  lithium
+  gel
+}
+
+enum StockStatus {
+  in_stock
+  low_stock
+  out_of_stock
+  preorder
+}
+
+enum PaymentMethod {
+  cod
+  razorpay
+}
+
+enum PaymentStatus {
+  pending
+  paid
+  failed
+  refunded
+}
+
+enum OrderStatus {
+  placed
+  confirmed
+  out_for_delivery
+  delivered
+  cancelled
+}
+
+enum ReviewSource {
+  google
+  justdial
+  site
+}
+
+model User {
+  id          String    @id @default(cuid())
+  name        String
+  email       String    @unique
+  phone       String?
+  password    String
+  active      Boolean   @default(true)
+  lastLoginAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  orders      Order[]
+
+  @@index([active])
+  @@index([createdAt])
+}
+
+model Brand {
+  id        String    @id @default(cuid())
+  name      String
+  slug      String    @unique
+  logoUrl   String?
+  color     String    @default("bg-brand-600")
+  active    Boolean   @default(true)
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([active])
+}
+
+model Product {
+  id                   String                        @id @default(cuid())
+  brandId              String
+  brand                Brand                         @relation(fields: [brandId], references: [id])
+  modelName            String
+  slug                 String                        @unique
+  category             Category
+  batteryType          BatteryType
+  capacityAh           Int
+  warrantyMonths       Int
+  mrp                  Int
+  priceWithExchange    Int
+  priceWithoutExchange Int
+  installationIncluded Boolean                       @default(true)
+  stockStatus          StockStatus                   @default(in_stock)
+  images               String
+  description          String                        @default("")
+  partNumber           String                        @default("")
+  warrantyText         String                        @default("")
+  longDescription      String                        @default("")
+  batteryLayout        String                        @default("")
+  specifications       String                        @default("{}")
+  features             String                        @default("[]")
+  recommendedFor       String                        @default("")
+  featured             Boolean                       @default(false)
+  active               Boolean                       @default(true)
+  compatibilities      VehicleCompatibility[]
+  localityAvailability ProductLocalityAvailability[]
+  orderItems           OrderItem[]
+  reviews              Review[]
+  createdAt            DateTime                      @default(now())
+  updatedAt            DateTime                      @updatedAt
+
+  @@index([category])
+  @@index([brandId])
+  @@index([featured])
+  @@index([active])
+}
+
+model VehicleCompatibility {
+  id           String  @id @default(cuid())
+  productId    String
+  product      Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  vehicleMake  String
+  vehicleModel String
+  yearFrom     Int     @default(2010)
+  yearTo       Int     @default(2026)
+
+  @@index([vehicleMake, vehicleModel])
+  @@index([productId])
+}
+
+model VehicleCatalog {
+  id       String  @id @default(cuid())
+  category String
+  make     String
+  model    String
+  active   Boolean @default(true)
+
+  @@unique([category, make, model])
+  @@index([category])
+  @@index([active])
+}
+
+model Locality {
+  id                  String                        @id @default(cuid())
+  name                String
+  slug                String                        @unique
+  pincode             String
+  deliveryEtaHours    Int                           @default(4)
+  landmarkNote        String?
+  productAvailability ProductLocalityAvailability[]
+  orders              Order[]
+  createdAt           DateTime                      @default(now())
+  updatedAt           DateTime                      @updatedAt
+}
+
+model ProductLocalityAvailability {
+  id          String   @id @default(cuid())
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  localityId  String
+  locality    Locality @relation(fields: [localityId], references: [id], onDelete: Cascade)
+  inStock     Boolean  @default(true)
+  etaOverride Int?
+
+  @@unique([productId, localityId])
+}
+
+model Order {
+  id              String        @id @default(cuid())
+  userId          String?
+  user            User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  customerName    String
+  phone           String
+  email           String?
+  address         String
+  localityId      String
+  locality        Locality      @relation(fields: [localityId], references: [id])
+  paymentMethod   PaymentMethod @default(cod)
+  paymentStatus   PaymentStatus @default(pending)
+  razorpayOrderId String?
+  status          OrderStatus   @default(placed)
+  totalAmount     Int
+  exchangeOpted   Boolean       @default(false)
+  deliverySlot    String?
+  notes           String?
+  items           OrderItem[]
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([phone])
+  @@index([createdAt])
+  @@index([paymentStatus])
+  @@index([status])
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int     @default(1)
+  unitPrice Int
+  exchange  Boolean @default(false)
+}
+
+model Review {
+  id         String       @id @default(cuid())
+  productId  String?
+  product    Product?     @relation(fields: [productId], references: [id], onDelete: SetNull)
+  rating     Int
+  text       String
+  authorName String
+  source     ReviewSource @default(site)
+  createdAt  DateTime     @default(now())
+
+  @@index([productId])
+  @@index([source])
+}
+
+model BlogPost {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  excerpt     String
+  content     String
+  coverImage  String?
+  published   Boolean  @default(true)
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([published])
+}
+
+model GalleryItem {
+  id        String   @id @default(cuid())
+  src       String
+  alt       String
+  caption   String
+  active    Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([active])
+  @@index([sortOrder])
+}
+
+model SiteSettings {
+  id              String   @id @default("default")
+  siteName        String
+  phone           String
+  whatsapp        String
+  email           String
+  address         String
+  rating          Float    @default(4.9)
+  reviewCount     Int      @default(500)
+  hours           String
+  emergencyHours  String
+  mapsUrl         String
+  heroTitle       String?
+  heroSubtitle    String?
+  tagline         String?
+  metaDescription String?
+  announcement    String?
+  deliveryNote    String?
+  instagramUrl    String?
+  facebookUrl     String?
+  youtubeUrl      String?
+  codEnabled      Boolean  @default(true)
+  updatedAt       DateTime @updatedAt
+}

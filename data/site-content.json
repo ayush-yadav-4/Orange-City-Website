@@ -1,0 +1,604 @@
+{
+  "settings": {
+    "siteName": "Orange City Batteries",
+    "phone": "+919325417265",
+    "whatsapp": "919325417265",
+    "email": "orders@ocbnagpur.in",
+    "address": "Surya Nagar, Pardi, Nagpur, Maharashtra 440008",
+    "rating": 4.9,
+    "reviewCount": 58,
+    "hours": "Mon – Sun: 8:00 AM – 9:00 PM",
+    "emergencyHours": "6:00 AM – 10:00 AM emergency service",
+    "mapsUrl": "https://www.google.com/maps?ll=21.151254,79.147626&z=16&t=m&hl=en&gl=IN&mapclient=embed&cid=17376480873825153670",
+    "heroTitle": "Buy Genuine Batteries Online in Nagpur",
+    "heroSubtitle": "Car, bike, inverter & truck batteries with free doorstep delivery and installation."
+  },
+  "brands": [
+    {
+      "id": "1",
+      "name": "Exide",
+      "slug": "exide",
+      "color": "bg-red-600",
+      "logoUrl": ""
+    },
+    {
+      "id": "2",
+      "name": "Amaron",
+      "slug": "amaron",
+      "color": "bg-green-600",
+      "logoUrl": ""
+    },
+    {
+      "id": "3",
+      "name": "SF Sonic",
+      "slug": "sf-sonic",
+      "color": "bg-blue-600",
+      "logoUrl": ""
+    },
+    {
+      "id": "4",
+      "name": "Luminous",
+      "slug": "luminous",
+      "color": "bg-yellow-500",
+      "logoUrl": ""
+    },
+    {
+      "id": "5",
+      "name": "Okaya",
+      "slug": "okaya",
+      "color": "bg-indigo-600",
+      "logoUrl": ""
+    },
+    {
+      "id": "6",
+      "name": "Autobat",
+      "slug": "autobat",
+      "color": "bg-ink-700",
+      "logoUrl": ""
+    },
+    {
+      "id": "7",
+      "name": "Microtek",
+      "slug": "microtek",
+      "color": "bg-purple-600",
+      "logoUrl": ""
+    },
+    {
+      "id": "8",
+      "name": "Bosch",
+      "slug": "bosch",
+      "color": "bg-ink-800",
+      "logoUrl": ""
+    }
+  ],
+  "products": [
+    {
+      "id": "1",
+      "slug": "exide-xpress-xp800-car-battery",
+      "modelName": "Xpress XP800",
+      "category": "car",
+      "batteryType": "flat",
+      "capacityAh": 35,
+      "warrantyMonths": 48,
+      "mrp": 6200,
+      "priceWithExchange": 4499,
+      "priceWithoutExchange": 5299,
+      "stockStatus": "in_stock",
+      "images": "[\"https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?w=800&q=80\"]",
+      "brandSlug": "exide",
+      "vehicles": [
+        {
+          "make": "Maruti Suzuki",
+          "model": "Swift"
+        },
+        {
+          "make": "Maruti Suzuki",
+          "model": "Dzire"
+        },
+        {
+          "make": "Hyundai",
+          "model": "i20"
+        },
+        {
+          "make": "Tata Motors",
+          "model": "Tiago"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "slug": "amaron-go-flo-35b20l-car-battery",
+      "modelName": "Go FLO 35B20L",
+      "category": "car",
+      "batteryType": "flat",
+      "capacityAh": 35,
+      "warrantyMonths": 55,
+      "mrp": 6800,
+      "priceWithExchange": 4799,
+      "priceWithoutExchange": 5599,
+      "stockStatus": "in_stock",
+      "images": "[\"https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=800&q=80\"]",
+      "brandSlug": "amaron",
+      "vehicles": [
+        {
+          "make": "Honda",
+          "model": "City"
+        },
+        {
+          "make": "Honda",
+          "model": "Amaze"
+        },
+        {
+          "make": "Hyundai",
+          "model": "Creta"
+        },
+        {
+          "make": "Maruti Suzuki",
+          "model": "Baleno"
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "slug": "bosch-s4-005-car-battery",
+      "modelName": "S4 005",
+      "category": "car",
+      "batteryType": "flat",
+      "capacityAh": 60,
+      "warrantyMonths": 36,
+      "mrp": 8900,
+      "priceWithExchange": 6999,
+      "priceWithoutExchange": 7799,
+      "stockStatus": "low_stock",
+      "images": "[\"https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=800&q=80\"]",
+      "brandSlug": "bosch",
+      "vehicles": [
+        {
+          "make": "Toyota",
+          "model": "Innova"
+        },
+        {
+          "make": "Mahindra",
+          "model": "XUV500"
+        },
+        {
+          "make": "Hyundai",
+          "model": "Creta"
+        },
+        {
+          "make": "Kia",
+          "model": "Seltos"
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "slug": "amaron-freshpak-pro-65d26l-car-battery",
+      "modelName": "Freshpak Pro 65D26L",
+      "category": "car",
+      "batteryType": "flat",
+      "capacityAh": 65,
+      "warrantyMonths": 60,
+      "mrp": 9800,
+      "priceWithExchange": 7599,
+      "priceWithoutExchange": 8499,
+      "stockStatus": "in_stock",
+      "images": "[\"https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=800&q=80\"]",
+      "brandSlug": "amaron",
+      "vehicles": [
+        {
+          "make": "Mahindra",
+          "model": "Scorpio"
+        },
+        {
+          "make": "Tata Motors",
+          "model": "Nexon"
+        },
+        {
+          "make": "Maruti Suzuki",
+          "model": "Ertiga"
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "slug": "sf-sonic-stz-5l-bike-battery",
+      "modelName": "STZ-5L",
+      "category": "bike",
+      "batteryType": "vrla",
+      "capacityAh": 5,
+      "warrantyMonths": 24,
+      "mrp": 2200,
+      "priceWithExchange": 1499,
+      "priceWithoutExchange": 1799,
+      "stockStatus": "in_stock",
+      "images": "[\"https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=800&q=80\"]",
+      "brandSlug": "sf-sonic",
+      "vehicles": [
+        {
+          "make": "Honda",
+          "model": "Activa"
+        },
+        {
+          "make": "TVS",
+          "model": "Jupiter"
+        },
+        {
+          "make": "Hero",
+          "model": "Splendor"
+        },
+        {
+          "make": "Bajaj",
+          "model": "Pulsar"
+        }
+      ]
+    },
+    {
+      "id": "6",
+      "slug": "exide-milege-m35-bike-battery",
+      "modelName": "Milege M35",
+      "category": "bike",
+      "batteryType": "vrla",
+      "capacityAh": 5,
+      "warrantyMonths": 18,
+      "mrp": 2100,
+      "priceWithExchange": 1399,
+      "priceWithoutExchange": 1699,
+      "stockStatus": "in_stock",
+      "images": "[\"https://images.unsplash.com/photo-1558981359-219d6364c9c8?w=800&q=80\"]",
+      "brandSlug": "exide",
+      "vehicles": [
+        {
+          "make": "Honda",
+          "model": "Activa"
+        },
+        {
+          "make": "Suzuki",
+          "model": "Access"
+        },
+        {
+          "make": "Yamaha",
+          "model": "Fascino"
+        }
+      ]
+    },
+    {
+      "id": "7",
+      "slug": "luminous-iltt-18060-inverter-battery",
+      "modelName": "ILTT 18060",
+      "category": "inverter",
+      "batteryType": "tubular",
+      "capacityAh": 150,
+      "warrantyMonths": 48,
+      "mrp": 16500,
+      "priceWithExchange": 12499,
+      "priceWithoutExchange": 13999,
+      "stockStatus": "in_stock",
+      "images": "[\"https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&q=80\"]",
+      "brandSlug": "luminous",
+      "vehicles": []
+    },
+    {
+      "id": "8",
+      "slug": "livfast-xp1500-inverter-battery",
+      "modelName": "XP1500",
+      "category": "inverter",
+      "batteryType": "tubular",
+      "capacityAh": 150,
+      "warrantyMonths": 60,
+      "mrp": 17200,
+      "priceWithExchange": 12999,
+      "priceWithoutExchange": 14499,
+      "stockStatus": "in_stock",
+      "images": "[\"https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80\"]",
+      "brandSlug": "livfast",
+      "vehicles": []
+    },
+    {
+      "id": "9",
+      "slug": "luminous-red-charge-rc25000-inverter-battery",
+      "modelName": "Red Charge RC25000",
+      "category": "inverter",
+      "batteryType": "tubular",
+      "capacityAh": 200,
+      "warrantyMonths": 60,
+      "mrp": 19800,
+      "priceWithExchange": 14999,
+      "priceWithoutExchange": 16499,
+      "stockStatus": "in_stock",
+      "images": "[\"https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&q=80\"]",
+      "brandSlug": "luminous",
+      "vehicles": []
+    },
+    {
+      "id": "10",
+      "slug": "exide-endura-100ah-truck-battery",
+      "modelName": "Endura 100Ah",
+      "category": "truck",
+      "batteryType": "flat",
+      "capacityAh": 100,
+      "warrantyMonths": 18,
+      "mrp": 12500,
+      "priceWithExchange": 9899,
+      "priceWithoutExchange": 10999,
+      "stockStatus": "in_stock",
+      "images": "[\"https://images.unsplash.com/photo-1601584115197-04ecc1da5d9a?w=800&q=80\"]",
+      "brandSlug": "exide",
+      "vehicles": [
+        {
+          "make": "Tata Motors",
+          "model": "Ace"
+        },
+        {
+          "make": "Mahindra",
+          "model": "Bolero Pickup"
+        }
+      ]
+    },
+    {
+      "id": "11",
+      "slug": "amaron-hiway-100ah-truck-battery",
+      "modelName": "HiWAY 100Ah",
+      "category": "truck",
+      "batteryType": "flat",
+      "capacityAh": 100,
+      "warrantyMonths": 36,
+      "mrp": 13200,
+      "priceWithExchange": 10299,
+      "priceWithoutExchange": 11499,
+      "stockStatus": "in_stock",
+      "images": "[\"https://images.unsplash.com/photo-1601584115197-04ecc1da5d9a?w=800&q=80\"]",
+      "brandSlug": "amaron",
+      "vehicles": [
+        {
+          "make": "Ashok Leyland",
+          "model": "Dost"
+        },
+        {
+          "make": "Mahindra",
+          "model": "Bolero Pickup"
+        }
+      ]
+    },
+    {
+      "id": "12",
+      "slug": "exide-inva-tubular-it500-inverter-battery",
+      "modelName": "Inva Tubular IT500",
+      "category": "inverter",
+      "batteryType": "tubular",
+      "capacityAh": 150,
+      "warrantyMonths": 66,
+      "mrp": 20643,
+      "priceWithExchange": 13200,
+      "priceWithoutExchange": 17000,
+      "stockStatus": "in_stock",
+      "images": "[\"https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&q=80\"]",
+      "brandSlug": "exide",
+      "vehicles": []
+    }
+  ],
+  "blogs": [
+    {
+      "id": "1",
+      "title": "Battery Price in Nagpur 2026 — Complete Buying Guide",
+      "slug": "battery-price-in-nagpur-2026",
+      "excerpt": "Current car, bike and inverter battery prices in Nagpur with exchange vs without exchange, plus tips to avoid overpaying.",
+      "coverImage": "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=1200&q=80",
+      "sections": [
+        {
+          "heading": "Why prices vary",
+          "body": "Brand, Ah capacity, warranty and old-battery exchange value all affect the final amount. Always compare with-exchange vs without-exchange before deciding."
+        },
+        {
+          "heading": "Car batteries",
+          "body": "Hatchback batteries (35Ah) typically start from ₹4,499 with exchange. SUV batteries (60–65Ah) cost more — from ₹6,999 with exchange. We publish both prices on every product page."
+        },
+        {
+          "heading": "Bike batteries",
+          "body": "Most scooters use 5Ah VRLA starting from ₹1,399 with exchange. Bigger bikes may need 7–9Ah. Fitment is usually under 20 minutes at your doorstep."
+        },
+        {
+          "heading": "Inverter batteries",
+          "body": "Tubular batteries (150–200Ah) are preferred for Nagpur summers. 150Ah tubular starts from ₹12,499 with exchange. Factor in backup hours and inverter matching."
+        },
+        {
+          "heading": "Localities we cover",
+          "body": "Pardi, Sadar, Dharampeth, Sitabuldi, Hingna, Wardha Road and 20+ more — with locality-specific delivery ETAs."
+        }
+      ],
+      "published": true
+    },
+    {
+      "id": "2",
+      "title": "How to Choose a Car Battery in Nagpur Heat",
+      "slug": "choose-car-battery-nagpur-heat",
+      "excerpt": "Ah rating, warranty and heat tolerance — what matters when summers hit 45°C in Nagpur.",
+      "coverImage": "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=1200&q=80",
+      "sections": [
+        {
+          "heading": "Heat stress on batteries",
+          "body": "Nagpur summers stress car batteries. Choose adequate Ah for your vehicle, prefer brands with strong heat performance, and replace before monsoon if cranking is weak."
+        },
+        {
+          "heading": "What to check",
+          "body": "Check CCA (Cold Cranking Amps), reserve capacity, and warranty period. Maintenance-free batteries are best for city driving."
+        }
+      ],
+      "published": true
+    },
+    {
+      "id": "3",
+      "title": "Inverter Battery Buying Guide for Nagpur Homes",
+      "slug": "inverter-battery-buying-guide-nagpur",
+      "excerpt": "Tubular vs flat plate, backup calculation, and when exchange makes sense for home inverter setups.",
+      "coverImage": "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1200&q=80",
+      "sections": [
+        {
+          "heading": "Tubular vs flat plate",
+          "body": "For frequent power cuts, tall tubular batteries last longer under deep discharge. Match Ah to your inverter VA and load."
+        },
+        {
+          "heading": "Exchange savings",
+          "body": "Old battery exchange can cut cost by ₹2,000–4,000 — we show both prices clearly on every product."
+        }
+      ],
+      "published": true
+    }
+  ],
+  "gallery": [
+    {
+      "id": "1",
+      "src": "https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?w=600&q=80",
+      "alt": "Automotive battery installation at Orange City Batteries, Nagpur",
+      "caption": "Automotive battery installation"
+    },
+    {
+      "id": "2",
+      "src": "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=600&q=80",
+      "alt": "Exide and Amaron car batteries on shelf at OCB Nagpur",
+      "caption": "Exide & Amaron brands in stock"
+    },
+    {
+      "id": "3",
+      "src": "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=600&q=80",
+      "alt": "Inverter battery setup for home backup in Nagpur",
+      "caption": "Home inverter battery setup"
+    },
+    {
+      "id": "4",
+      "src": "https://images.unsplash.com/photo-1601584115197-04ecc1da5d9a?w=600&q=80",
+      "alt": "Heavy-duty truck battery at Orange City Batteries",
+      "caption": "Commercial truck batteries"
+    },
+    {
+      "id": "5",
+      "src": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=600&q=80",
+      "alt": "Two-wheeler battery fitment at doorstep in Nagpur",
+      "caption": "Doorstep bike battery fitment"
+    },
+    {
+      "id": "6",
+      "src": "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=600&q=80",
+      "alt": "Battery load testing at OCB Nagpur workshop",
+      "caption": "Digital battery load testing"
+    }
+  ],
+  "vehicleModels": {
+    "car": {
+      "Maruti Suzuki": [
+        "Swift",
+        "Dzire",
+        "Baleno",
+        "Ertiga",
+        "Brezza",
+        "Wagon R"
+      ],
+      "Hyundai": [
+        "i20",
+        "Creta",
+        "Venue",
+        "Verna",
+        "Grand i10"
+      ],
+      "Honda": [
+        "City",
+        "Amaze",
+        "Elevate",
+        "WR-V"
+      ],
+      "Tata Motors": [
+        "Nexon",
+        "Tiago",
+        "Harrier",
+        "Punch",
+        "Safari"
+      ],
+      "Mahindra": [
+        "Scorpio",
+        "XUV700",
+        "Thar",
+        "Bolero",
+        "XUV300"
+      ],
+      "Toyota": [
+        "Innova",
+        "Fortuner",
+        "Glanza",
+        "Urban Cruiser"
+      ],
+      "Kia": [
+        "Seltos",
+        "Sonet",
+        "Carens"
+      ],
+      "Volkswagen": [
+        "Polo",
+        "Vento",
+        "Taigun"
+      ],
+      "Skoda": [
+        "Kushaq",
+        "Slavia",
+        "Rapid"
+      ],
+      "Renault": [
+        "Kwid",
+        "Triber",
+        "Kiger"
+      ],
+      "Nissan": [
+        "Magnite",
+        "Kicks"
+      ],
+      "Ford": [
+        "EcoSport",
+        "Endeavour"
+      ]
+    },
+    "bike": {
+      "Honda": [
+        "Activa",
+        "Shine",
+        "Unicorn"
+      ],
+      "Hero": [
+        "Splendor",
+        "Passion",
+        "Xtreme"
+      ],
+      "TVS": [
+        "Jupiter",
+        "Apache",
+        "NTorq"
+      ],
+      "Bajaj": [
+        "Pulsar",
+        "Platina",
+        "Avenger"
+      ],
+      "Suzuki": [
+        "Access",
+        "Gixxer"
+      ],
+      "Yamaha": [
+        "Fascino",
+        "FZ"
+      ]
+    },
+    "truck": {
+      "Tata Motors": [
+        "Ace",
+        "407",
+        "LPT"
+      ],
+      "Mahindra": [
+        "Bolero Pickup",
+        "Jeeto"
+      ],
+      "Ashok Leyland": [
+        "Dost",
+        "Partner"
+      ]
+    }
+  }
+}
