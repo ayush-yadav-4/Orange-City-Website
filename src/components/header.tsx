@@ -69,7 +69,7 @@ export function Header() {
       </div>
 
       {/* Main navbar */}
-      <div className="bg-[hsl(var(--background))]/95 backdrop-blur-xl">
+      <div className="relative z-30 bg-[hsl(var(--background))]/95 backdrop-blur-xl border-b border-[hsl(var(--border))]/50">
         <div className="container-page flex h-14 items-stretch justify-between gap-2 sm:h-[4.5rem] sm:gap-3">
           <Link href="/" className="group flex min-w-0 max-w-[55%] flex-shrink items-center gap-2 self-center sm:max-w-none sm:gap-2.5">
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-md transition group-hover:shadow-lg sm:h-11 sm:w-11">
@@ -94,14 +94,18 @@ export function Header() {
                   )}
                 >
                   {item.label}
-                  {item.dropdown && <ChevronDown size={13} className="opacity-60 transition-transform group-hover:rotate-180" />}
+                  {item.dropdown && <ChevronDown size={13} className="opacity-60 transition-transform duration-200 group-hover:rotate-180" />}
                 </Link>
                 {item.dropdown && (
-                  <div className="invisible absolute left-0 top-full z-50 pt-1 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100">
-                    <div className="flex w-56 flex-col overflow-hidden rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] py-1.5 shadow-xl">
+                  <div className="invisible absolute left-0 top-full z-[100] pt-2 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100">
+                    <div className="flex w-60 flex-col overflow-hidden rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] py-2 shadow-2xl ring-1 ring-black/10 dark:ring-white/10">
                       {item.dropdown.map((dropItem) => (
-                        <Link key={dropItem.href} href={dropItem.href} className="px-4 py-2 text-sm transition hover:bg-brand-500/10 hover:text-brand-600">
-                          {dropItem.label}
+                        <Link
+                          key={dropItem.href}
+                          href={dropItem.href}
+                          className="flex items-center justify-between px-4 py-2.5 text-sm font-medium text-[hsl(var(--foreground))] transition hover:bg-brand-500/10 hover:text-brand-600 dark:hover:bg-brand-950/30"
+                        >
+                          <span>{dropItem.label}</span>
                         </Link>
                       ))}
                     </div>

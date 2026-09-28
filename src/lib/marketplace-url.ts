@@ -10,13 +10,23 @@ export function categoryFilterUrl(category: string) {
 
 export const categorySlugToFilter: Record<string, string> = {
   "car-batteries": "car",
+  "car": "car",
+  "scooty-batteries": "scooty",
+  "scooty": "scooty",
   "two-wheeler-battery": "bike",
+  "bike-batteries": "bike",
+  "bike": "bike",
   "inverter-batteries": "inverter",
+  "inverter": "inverter",
   "heavy-engine-batteries": "truck",
+  "commercial-truck": "truck",
+  "truck": "truck",
+  "tractor-agri": "tractor",
+  "tractor": "tractor",
+  "erickshaw": "erickshaw",
   "inverter-home-ups": "inverter",
 };
 
 export function categorySlugUrl(slug: string) {
-  const category = categorySlugToFilter[slug];
-  return category ? categoryFilterUrl(category) : "/marketplace";
+  return `/categories/${encodeURIComponent(slug)}`;
 }

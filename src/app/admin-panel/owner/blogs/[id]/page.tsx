@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AdminField, AdminFormActions, AdminPageHeader } from "@/components/admin/admin-ui";
 import { parseBlogSections } from "@/lib/db/content";
+import { CloudinaryUpload } from "@/components/admin/cloudinary-upload";
 
 export default function EditBlogPage({ params }: { params: { id: string } }) {
   const router = useRouter();
@@ -40,28 +41,74 @@ export default function EditBlogPage({ params }: { params: { id: string } }) {
     });
   }
 
+  const [saved, setSaved] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
-    const res = await fetch(`/api/admin/blogs/${params.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
-    setSaving(false);
-    if (res.ok) router.push("/admin-panel/owner/blogs");
+    setSaved(false);
+    setError(null);
+    try {
+      const res = await fetch(`/api/admin/blogs/${params.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) {
+        const d = await res.json().catch(() => ({}));
+        throw new Error(d.error || "Failed to update blog post");
+      }
+      setSaved(true);
+      setTimeout(() => setSaved(false), 5000);
+    } catch (err: any) {
+      setError(err.message || "An error occurred while saving.");
+    } finally {
+      setSaving(false);
+    }
   }
 
   if (loading) return <div className="py-20 text-center text-sm">Loading...</div>;
 
   return (
-    <div className="mx-auto max-w-2xl">
-      <AdminPageHeader title="Edit Blog Post" subtitle={form.title} />
+    <div className="mx-auto max-w-2xl space-y-4">
+      <AdminPageHeader
+        title="Edit Blog Post"
+        subtitle={form.title}
+        action={
+          <button
+            type="button"
+            onClick={() => router.push("/admin-panel/owner/blogs")}
+            className="btn-secondary text-xs"
+          >
+            ← Back to Blogs
+          </button>
+        }
+      />
+
+      {saved && (
+        <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3.5 text-sm font-semibold text-emerald-800 dark:text-emerald-300">
+          ✓ Blog post updated! Changes are live on the website blog immediately.
+        </div>
+      )}
+
+      {error && (
+        <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-3.5 text-sm font-semibold text-red-800 dark:text-red-300">
+          ✕ {error}
+        </div>
+      )}
+
       <form onSubmit={submit} className="space-y-4 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6">
         <AdminField label="Title" value={form.title} onChange={(v) => set("title", v)} required />
         <AdminField label="Slug" value={form.slug} onChange={(v) => set("slug", v)} required />
         <AdminField label="Excerpt" value={form.excerpt} onChange={(v) => set("excerpt", v)} />
-        <AdminField label="Cover Image URL" value={form.coverImage} onChange={(v) => set("coverImage", v)} />
+        <CloudinaryUpload
+          label="Cover Image"
+          value={form.coverImage}
+          onChange={(url) => set("coverImage", url)}
+          folder="blogs"
+          helperText="Upload or change blog cover image."
+        />
         {form.sections.map((s, i) => (
           <div key={i} className="rounded-lg border border-[hsl(var(--border))] p-4">
             <AdminField label={`Section ${i + 1} Heading`} value={s.heading} onChange={(v) => updateSection(i, "heading", v)} />
@@ -81,7 +128,13 @@ export default function EditBlogPage({ params }: { params: { id: string } }) {
         <label className="flex items-center gap-2 text-sm">
           <input type="checkbox" checked={form.published} onChange={(e) => set("published", e.target.checked)} /> Published
         </label>
-        <AdminFormActions saving={saving} onCancel={() => router.back()} />
+        <AdminFormActions
+          saving={saving}
+          saved={saved}
+          saveText="Save & Update Blog"
+          onCancel={() => router.push("/admin-panel/owner/blogs")}
+          cancelText="Back to Blogs"
+        />
       </form>
     </div>
   );

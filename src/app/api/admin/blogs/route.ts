@@ -11,6 +11,8 @@ export async function GET() {
   return NextResponse.json(blogs);
 }
 
+import { revalidateSiteContent } from "@/lib/content/revalidate";
+
 export async function POST(req: Request) {
   if (!(await isAdminAuthenticated())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -26,5 +28,8 @@ export async function POST(req: Request) {
       published: body.published ?? true,
     },
   });
+
+  revalidateSiteContent();
+
   return NextResponse.json(blog);
 }

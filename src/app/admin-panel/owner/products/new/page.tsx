@@ -4,11 +4,14 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AdminField, AdminFormActions, AdminPageHeader, AdminSelect } from "@/components/admin/admin-ui";
 import { ProductDetailFields, type ProductDetailForm } from "@/components/admin/product-detail-fields";
+import { CloudinaryUpload } from "@/components/admin/cloudinary-upload";
+import { VehicleCompatibilitySelector, type VehicleSelection } from "@/components/admin/vehicle-compatibility-selector";
 
 export default function NewProductPage() {
   const router = useRouter();
   const [brands, setBrands] = useState<{ slug: string; name: string }[]>([]);
   const [saving, setSaving] = useState(false);
+  const [vehicles, setVehicles] = useState<VehicleSelection[]>([]);
   const [form, setForm] = useState({
     modelName: "", slug: "", brandSlug: "", category: "car", batteryType: "flat",
     capacityAh: "35", warrantyMonths: "24", mrp: "0", priceWithExchange: "0",
@@ -32,17 +35,29 @@ export default function NewProductPage() {
     setForm((f) => ({ ...f, [k]: v }));
   }
 
+  const [error, setError] = useState<string | null>(null);
+
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
-    const images = form.images ? JSON.stringify([form.images]) : "[]";
-    const res = await fetch("/api/admin/products", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, images, vehicles: [] }),
-    });
-    setSaving(false);
-    if (res.ok) router.push("/admin-panel/owner/products");
+    setError(null);
+    try {
+      const images = form.images ? JSON.stringify([form.images]) : "[]";
+      const res = await fetch("/api/admin/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, images, vehicles }),
+      });
+      if (!res.ok) {
+        const d = await res.json().catch(() => ({}));
+        throw new Error(d.error || "Failed to create product");
+      }
+      const created = await res.json();
+      router.push(`/admin-panel/owner/products/${created.id}`);
+    } catch (err: any) {
+      setError(err.message || "An error occurred while creating product.");
+      setSaving(false);
+    }
   }
 
   const detailForm: ProductDetailForm = {
@@ -56,8 +71,26 @@ export default function NewProductPage() {
   };
 
   return (
-    <div className="mx-auto max-w-2xl">
-      <AdminPageHeader title="Add Product" subtitle="Create a new marketplace listing" />
+    <div className="mx-auto max-w-2xl space-y-4">
+      <AdminPageHeader
+        title="Add Product"
+        subtitle="Create a new marketplace listing"
+        action={
+          <button
+            type="button"
+            onClick={() => router.push("/admin-panel/owner/products")}
+            className="btn-secondary text-xs"
+          >
+            ← Back to Products
+          </button>
+        }
+      />
+
+      {error && (
+        <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-3.5 text-sm font-semibold text-red-800 dark:text-red-300">
+          ✕ {error}
+        </div>
+      )}
       <form onSubmit={submit} className="space-y-4 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6">
         <AdminField label="Model Name" value={form.modelName} onChange={(v) => { set("modelName", v); set("slug", v.toLowerCase().replace(/\s+/g, "-")); }} required />
         <AdminField label="Slug" value={form.slug} onChange={(v) => set("slug", v)} required />
@@ -72,11 +105,24 @@ export default function NewProductPage() {
           <AdminField label="With Exchange (₹)" value={form.priceWithExchange} onChange={(v) => set("priceWithExchange", v)} type="number" />
           <AdminField label="Without Exchange (₹)" value={form.priceWithoutExchange} onChange={(v) => set("priceWithoutExchange", v)} type="number" />
         </div>
-        <AdminField label="Image URL" value={form.images} onChange={(v) => set("images", v)} />
+        <CloudinaryUpload
+          label="Product Image"
+          value={form.images}
+          onChange={(url) => set("images", url)}
+          folder="products"
+          helperText="Upload the main product image. It will be optimized and delivered via Cloudinary."
+        />
         <div>
           <label className="mb-1 block text-xs font-bold uppercase text-[hsl(var(--muted-foreground))]">Short summary</label>
           <textarea value={form.description} onChange={(e) => set("description", e.target.value)} className="input-field min-h-[80px]" />
         </div>
+
+        {/* Vehicle Compatibility Multi-Select */}
+        <VehicleCompatibilitySelector
+          value={vehicles}
+          onChange={setVehicles}
+          defaultCategory={form.category}
+        />
 
         <ProductDetailFields form={detailForm} set={setDetail} />
 

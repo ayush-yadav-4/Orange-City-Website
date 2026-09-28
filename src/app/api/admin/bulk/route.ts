@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
+import { revalidateSiteContent } from "@/lib/content/revalidate";
 import type { BatteryType, Category, StockStatus } from "@prisma/client";
 
 function parseCsv(text: string): string[][] {
@@ -68,6 +69,7 @@ export async function POST(req: Request) {
       });
       imported++;
     }
+    revalidateSiteContent();
     return NextResponse.json({ ok: true, imported });
   }
 
@@ -92,6 +94,7 @@ export async function POST(req: Request) {
       });
       imported++;
     }
+    revalidateSiteContent();
     return NextResponse.json({ ok: true, imported });
   }
 

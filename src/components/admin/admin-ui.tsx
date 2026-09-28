@@ -332,21 +332,69 @@ export function AdminSelect({
   );
 }
 
-export function AdminFormActions({
-  saving,
-  onCancel,
+export function AdminSuccessNotice({
+  message = "Saved successfully! Changes are live on the website.",
+  onDismiss,
 }: {
-  saving: boolean;
-  onCancel: () => void;
+  message?: string;
+  onDismiss?: () => void;
 }) {
   return (
-    <div className="flex gap-3 border-t border-[hsl(var(--border))] pt-6">
-      <button type="submit" disabled={saving} className="btn-primary px-6 py-2.5">
-        {saving ? "Saving..." : "Save Changes"}
-      </button>
-      <button type="button" onClick={onCancel} className="btn-secondary px-6 py-2.5">
-        Cancel
-      </button>
+    <div className="flex items-center justify-between rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3.5 text-sm font-semibold text-emerald-800 dark:text-emerald-300 animate-in fade-in slide-in-from-top-2">
+      <div className="flex items-center gap-2">
+        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 text-white text-xs">✓</span>
+        <span>{message}</span>
+      </div>
+      {onDismiss && (
+        <button
+          type="button"
+          onClick={onDismiss}
+          className="text-xs text-emerald-700 hover:text-emerald-900 dark:text-emerald-400"
+        >
+          ✕
+        </button>
+      )}
+    </div>
+  );
+}
+
+export function AdminFormActions({
+  saving,
+  saved,
+  saveText = "Save Changes",
+  onCancel,
+  cancelText = "Back to List",
+}: {
+  saving: boolean;
+  saved?: boolean;
+  saveText?: string;
+  onCancel?: () => void;
+  cancelText?: string;
+}) {
+  return (
+    <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[hsl(var(--border))] pt-6">
+      <div className="flex items-center gap-3">
+        <button
+          type="submit"
+          disabled={saving}
+          className={cn(
+            "btn-primary px-6 py-2.5 transition",
+            saved && "bg-emerald-600 hover:bg-emerald-500"
+          )}
+        >
+          {saving ? "Saving..." : saved ? "✓ Saved Live!" : saveText}
+        </button>
+        {saved && (
+          <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+            Updated instantly on frontend
+          </span>
+        )}
+      </div>
+      {onCancel && (
+        <button type="button" onClick={onCancel} className="btn-secondary px-5 py-2.5">
+          {cancelText}
+        </button>
+      )}
     </div>
   );
 }

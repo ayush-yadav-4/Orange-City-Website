@@ -6,15 +6,15 @@ export type MarketplaceProduct = ProductCardData & {
 };
 
 export const brandLogos: Record<string, string> = {
-  exide: "https://logo.clearbit.com/exideindustries.com",
-  amaron: "https://logo.clearbit.com/amaron.in",
-  luminous: "https://logo.clearbit.com/luminousindia.com",
-  "sf-sonic": "https://logo.clearbit.com/sonicbatteries.com",
-  bosch: "https://logo.clearbit.com/bosch.com",
-  livfast: "https://logo.clearbit.com/livfast.com",
-  microtek: "https://logo.clearbit.com/microtek.com",
-  okaya: "https://logo.clearbit.com/okaya.com",
-  powerzone: "https://logo.clearbit.com/powerzone.in",
+  exide: "",
+  amaron: "",
+  luminous: "",
+  "sf-sonic": "",
+  bosch: "",
+  livfast: "",
+  microtek: "",
+  okaya: "",
+  powerzone: "",
 };
 
 export const categoryMeta: Record<
@@ -27,13 +27,49 @@ export const categoryMeta: Record<
     category: "car",
     icon: "🚗",
   },
+  car: {
+    title: "Car & SUV Batteries",
+    description: "Genuine car & SUV batteries for all makes — Exide, Amaron, Bosch & more with free Nagpur delivery.",
+    category: "car",
+    icon: "🚗",
+  },
+  "scooty-batteries": {
+    title: "Scooty & Scooter Batteries",
+    description: "Activa, Jupiter, Access, Dio & all gearless scooter batteries with doorstep installation in Nagpur.",
+    category: "scooty",
+    icon: "🛵",
+  },
+  scooty: {
+    title: "Scooty & Scooter Batteries",
+    description: "Activa, Jupiter, Access, Dio & all gearless scooter batteries with doorstep installation in Nagpur.",
+    category: "scooty",
+    icon: "🛵",
+  },
+  "bike-batteries": {
+    title: "Motorcycle & Bike Batteries",
+    description: "Splendor, Pulsar, Shine, Bullet & all bike batteries — maintenance-free VRLA with doorstep fitment.",
+    category: "bike",
+    icon: "🏍️",
+  },
+  bike: {
+    title: "Motorcycle & Bike Batteries",
+    description: "Splendor, Pulsar, Shine, Bullet & all bike batteries — maintenance-free VRLA with doorstep fitment.",
+    category: "bike",
+    icon: "🏍️",
+  },
   "two-wheeler-battery": {
     title: "Two Wheeler Batteries",
-    description: "Bike & scooter batteries — sealed VRLA with doorstep fitment across Nagpur.",
+    description: "Scooter & motorcycle batteries with quick doorstep fitment across Nagpur.",
     category: "bike",
     icon: "🏍️",
   },
   "inverter-batteries": {
+    title: "Inverter Batteries",
+    description: "Tubular & flat plate inverter batteries for homes, shops & small industries.",
+    category: "inverter",
+    icon: "⚡",
+  },
+  inverter: {
     title: "Inverter Batteries",
     description: "Tubular & flat plate inverter batteries for homes, shops & small industries.",
     category: "inverter",
@@ -44,6 +80,36 @@ export const categoryMeta: Record<
     description: "Truck, tempo & commercial vehicle batteries with heavy-duty cranking power.",
     category: "truck",
     icon: "🚚",
+  },
+  "commercial-truck": {
+    title: "Commercial & Truck Batteries",
+    description: "Mini trucks, tempos, buses & heavy commercial haulers with heavy-duty cranking power.",
+    category: "truck",
+    icon: "🚚",
+  },
+  truck: {
+    title: "Commercial & Truck Batteries",
+    description: "Mini trucks, tempos, buses & heavy commercial haulers with heavy-duty cranking power.",
+    category: "truck",
+    icon: "🚚",
+  },
+  "tractor-agri": {
+    title: "Tractor & Agriculture Batteries",
+    description: "Heavy-duty tractor batteries for Mahindra, Swaraj, Sonalika, John Deere & more.",
+    category: "tractor",
+    icon: "🚜",
+  },
+  tractor: {
+    title: "Tractor & Agriculture Batteries",
+    description: "Heavy-duty tractor batteries for Mahindra, Swaraj, Sonalika, John Deere & more.",
+    category: "tractor",
+    icon: "🚜",
+  },
+  erickshaw: {
+    title: "E-Rickshaw & 3-Wheeler Batteries",
+    description: "High cycle life batteries for passenger auto rickshaws, cargo loaders & electric rickshaws.",
+    category: "erickshaw",
+    icon: "🛺",
   },
   "inverter-home-ups": {
     title: "Inverter & Home UPS",

@@ -5,12 +5,15 @@ import { useRouter } from "next/navigation";
 import { AdminField, AdminFormActions, AdminPageHeader, AdminSelect } from "@/components/admin/admin-ui";
 import { ProductDetailFields, type ProductDetailForm } from "@/components/admin/product-detail-fields";
 import { featuresJsonToText } from "@/lib/product-details";
+import { CloudinaryUpload } from "@/components/admin/cloudinary-upload";
+import { VehicleCompatibilitySelector, type VehicleSelection } from "@/components/admin/vehicle-compatibility-selector";
 
 export default function EditProductPage({ params }: { params: { id: string } }) {
   const router = useRouter();
   const [brands, setBrands] = useState<{ slug: string; name: string }[]>([]);
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [vehicles, setVehicles] = useState<VehicleSelection[]>([]);
   const [form, setForm] = useState({
     modelName: "", slug: "", brandSlug: "", category: "car", batteryType: "flat",
     capacityAh: "35", warrantyMonths: "24", mrp: "0", priceWithExchange: "0",
@@ -27,6 +30,14 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
       setBrands(b);
       let img = "";
       try { img = JSON.parse(p.images)[0] ?? ""; } catch { img = p.images; }
+      if (Array.isArray(p.compatibilities)) {
+        setVehicles(
+          p.compatibilities.map((c: { vehicleMake: string; vehicleModel: string }) => ({
+            make: c.vehicleMake,
+            model: c.vehicleModel,
+          }))
+        );
+      }
       setForm({
         modelName: p.modelName,
         slug: p.slug,
@@ -62,17 +73,32 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
     setForm((f) => ({ ...f, [k]: v }));
   }
 
+  const [saved, setSaved] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
-    const images = form.images ? JSON.stringify([form.images]) : "[]";
-    const res = await fetch(`/api/admin/products/${params.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, images, vehicles: [] }),
-    });
-    setSaving(false);
-    if (res.ok) router.push("/admin-panel/owner/products");
+    setSaved(false);
+    setError(null);
+    try {
+      const images = form.images ? JSON.stringify([form.images]) : "[]";
+      const res = await fetch(`/api/admin/products/${params.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, images, vehicles }),
+      });
+      if (!res.ok) {
+        const d = await res.json().catch(() => ({}));
+        throw new Error(d.error || "Failed to update product");
+      }
+      setSaved(true);
+      setTimeout(() => setSaved(false), 5000);
+    } catch (err: any) {
+      setError(err.message || "An error occurred while saving.");
+    } finally {
+      setSaving(false);
+    }
   }
 
   if (loading) return <div className="py-20 text-center text-sm">Loading...</div>;
@@ -88,8 +114,33 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
   };
 
   return (
-    <div className="mx-auto max-w-2xl">
-      <AdminPageHeader title="Edit Product" subtitle={form.modelName} />
+    <div className="mx-auto max-w-2xl space-y-4">
+      <AdminPageHeader
+        title="Edit Product"
+        subtitle={form.modelName}
+        action={
+          <button
+            type="button"
+            onClick={() => router.push("/admin-panel/owner/products")}
+            className="btn-secondary text-xs"
+          >
+            ← Back to Products List
+          </button>
+        }
+      />
+
+      {saved && (
+        <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3.5 text-sm font-semibold text-emerald-800 dark:text-emerald-300">
+          ✓ Product updated successfully! Live on website instantly without reloading.
+        </div>
+      )}
+
+      {error && (
+        <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-3.5 text-sm font-semibold text-red-800 dark:text-red-300">
+          ✕ {error}
+        </div>
+      )}
+
       <form onSubmit={submit} className="space-y-4 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6">
         <AdminField label="Model Name" value={form.modelName} onChange={(v) => set("modelName", v)} required />
         <AdminField label="Slug" value={form.slug} onChange={(v) => set("slug", v)} required />
@@ -109,18 +160,37 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
           <AdminField label="With Exchange (₹)" value={form.priceWithExchange} onChange={(v) => set("priceWithExchange", v)} type="number" />
           <AdminField label="Without Exchange (₹)" value={form.priceWithoutExchange} onChange={(v) => set("priceWithoutExchange", v)} type="number" />
         </div>
-        <AdminField label="Image URL" value={form.images} onChange={(v) => set("images", v)} />
+        <CloudinaryUpload
+          label="Product Image"
+          value={form.images}
+          onChange={(url) => set("images", url)}
+          folder="products"
+          helperText="Upload or change product image."
+        />
         <div>
           <label className="mb-1 block text-xs font-bold uppercase text-[hsl(var(--muted-foreground))]">Short summary</label>
           <textarea value={form.description} onChange={(e) => set("description", e.target.value)} className="input-field min-h-[80px]" placeholder="One-line summary for cards and search..." />
         </div>
+
+        {/* Vehicle Compatibility Multi-Select */}
+        <VehicleCompatibilitySelector
+          value={vehicles}
+          onChange={setVehicles}
+          defaultCategory={form.category}
+        />
 
         <ProductDetailFields form={detailForm} set={setDetail} />
 
         <label className="flex items-center gap-2 text-sm">
           <input type="checkbox" checked={form.active} onChange={(e) => set("active", e.target.checked)} /> Active (visible on website)
         </label>
-        <AdminFormActions saving={saving} onCancel={() => router.back()} />
+        <AdminFormActions
+          saving={saving}
+          saved={saved}
+          saveText="Save & Update Product"
+          onCancel={() => router.push("/admin-panel/owner/products")}
+          cancelText="Back to Products"
+        />
       </form>
     </div>
   );

@@ -26,9 +26,12 @@ type Props = {
 const CATEGORY_TABS = [
   { value: "", label: "All" },
   { value: "car", label: "Car" },
+  { value: "scooty", label: "Scooty" },
   { value: "bike", label: "Bike" },
+  { value: "truck", label: "Commercial" },
+  { value: "tractor", label: "Tractor" },
+  { value: "erickshaw", label: "E-Rickshaw" },
   { value: "inverter", label: "Inverter" },
-  { value: "truck", label: "Truck" },
 ] as const;
 
 export function MarketplaceCatalog({
@@ -119,7 +122,13 @@ export function MarketplaceCatalog({
     return fromProducts.length ? fromProducts : carModels[make] || [];
   }, [categoryProducts, make, category, vehicleModels]);
 
-  const isVehicleCategory = category === "car" || category === "bike" || category === "truck";
+  const isVehicleCategory =
+    category === "car" ||
+    category === "scooty" ||
+    category === "bike" ||
+    category === "truck" ||
+    category === "tractor" ||
+    category === "erickshaw";
 
   function applySearch() {
     updateUrl({ q: search, brand, make, model, capacity, category });

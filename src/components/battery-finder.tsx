@@ -2,17 +2,53 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Car, Zap, Search, Battery } from "lucide-react";
+import { Car, Zap, Search, Battery, Truck } from "lucide-react";
 import { cn } from "@/lib/utils";
-import {
-  carMakes,
-  carModels,
-  nagpurLocalities,
-  inverterCapacities,
-  brands,
-} from "@/lib/home-data";
+import { nagpurLocalities, inverterCapacities, brands } from "@/lib/home-data";
 
-type Tab = "car" | "inverter";
+type Tab = "car" | "scooty" | "bike" | "inverter" | "truck";
+
+const VEHICLE_CATALOG_PRESETS: Record<"car" | "scooty" | "bike" | "truck", Record<string, string[]>> = {
+  scooty: {
+    Honda: ["Activa 6G", "Activa 125", "Dio", "Grazia", "Aviator"],
+    TVS: ["Jupiter 110", "Jupiter 125", "Ntorq 125", "Scooty Pep+", "Scooty Zest"],
+    Suzuki: ["Access 125", "Burgman Street", "Avenis"],
+    Hero: ["Pleasure Plus", "Destini 125", "Maestro Edge"],
+    Yamaha: ["Fascino 125", "RayZR 125", "Aerox 155"],
+    Ather: ["450X", "450S", "Rizta"],
+    Ola: ["S1 Pro", "S1 Air", "S1 X"],
+    Bajaj: ["Chetak EV"],
+  },
+  bike: {
+    Hero: ["Splendor Plus", "HF Deluxe", "Passion Pro", "Glamour", "Xtreme 160R", "Xpulse 200"],
+    Honda: ["Shine 125", "SP 125", "Unicorn 160", "Hornet 2.0", "H'ness CB350", "Livo"],
+    Bajaj: ["Pulsar 150", "Pulsar NS200", "Pulsar N160", "Platina 100", "CT 110", "Avenger 220", "Dominar 400"],
+    TVS: ["Apache RTR 160", "Apache RTR 200", "Raider 125", "Sport", "Radeon", "Star City Plus"],
+    "Royal Enfield": ["Classic 350", "Bullet 350", "Hunter 350", "Meteor 350", "Himalayan 450", "Continental GT 650"],
+    Yamaha: ["FZ-S V3", "MT-15", "R15 V4", "FZ-X"],
+    KTM: ["Duke 200", "Duke 390", "RC 200", "Adventure 390"],
+    Suzuki: ["Gixxer 155", "Gixxer SF 250"],
+  },
+  car: {
+    "Maruti Suzuki": ["Swift", "Dzire", "Baleno", "Brezza", "Ertiga", "Wagon R", "Grand Vitara", "Alto K10"],
+    Hyundai: ["Creta", "Venue", "i20", "Verna", "Grand i10 Nios", "Exter", "Alcazar"],
+    "Tata Motors": ["Nexon", "Punch", "Harrier", "Tiago", "Safari", "Altroz", "Tigor"],
+    Mahindra: ["Scorpio-N", "Scorpio Classic", "XUV700", "Thar", "Bolero", "XUV300"],
+    Honda: ["City", "Amaze", "Elevate", "WR-V"],
+    Toyota: ["Innova Crysta", "Innova Hycross", "Fortuner", "Glanza", "Urban Cruiser Hyryder"],
+    Kia: ["Seltos", "Sonet", "Carens"],
+    Volkswagen: ["Taigun", "Virtus", "Polo", "Vento"],
+    Skoda: ["Kushaq", "Slavia"],
+    Renault: ["Kwid", "Triber", "Kiger"],
+  },
+  truck: {
+    "Tata Motors": ["Ace Gold (Chhota Hathi)", "Intra V30", "407 Gold", "Ultra T.7", "Prima 2830.K", "Signa 4825.TK"],
+    "Ashok Leyland": ["Dost+", "Bada Dost", "Ecomet 1215", "Boss 1415", "AVTR 4220"],
+    Eicher: ["Pro 2049", "Pro 2110", "Pro 3015", "Pro 6028"],
+    Mahindra: ["Bolero Maxi Truck", "Bolero Camper", "Furio 7", "Blazo X 28"],
+    BharatBenz: ["1217C", "1617R", "2823R", "3528C"],
+  },
+};
 
 export function BatteryFinder() {
   const router = useRouter();
@@ -23,64 +59,110 @@ export function BatteryFinder() {
   const [capacity, setCapacity] = useState("");
   const [brand, setBrand] = useState("");
 
-  const models = make ? (carModels[make] ?? []) : [];
+  const makesForTab = tab !== "inverter" ? Object.keys(VEHICLE_CATALOG_PRESETS[tab] || {}) : [];
+  const modelsForMake = tab !== "inverter" && make ? (VEHICLE_CATALOG_PRESETS[tab]?.[make] || []) : [];
 
   function handleFind() {
     const params = new URLSearchParams();
-    if (tab === "car") {
-      if (make) params.set("make", make);
-      if (model) params.set("model", model);
-      if (locality) params.set("locality", locality);
-      params.set("type", "car");
-    } else {
+    if (tab === "inverter") {
       if (capacity) params.set("capacity", capacity);
       if (brand) params.set("brand", brand);
       if (locality) params.set("locality", locality);
       params.set("type", "inverter");
+    } else {
+      if (make) params.set("make", make);
+      if (model) params.set("model", model);
+      if (locality) params.set("locality", locality);
+      params.set("type", tab);
     }
     router.push(`/battery-finder?${params.toString()}`);
+  }
+
+  function handleTabChange(nextTab: Tab) {
+    setTab(nextTab);
+    setMake("");
+    setModel("");
   }
 
   return (
     <section className="container-page -mt-8 relative z-10">
       <div className="overflow-hidden rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] shadow-xl">
         {/* Tab headers */}
-        <div className="flex border-b border-[hsl(var(--border))]">
+        <div className="flex flex-wrap border-b border-[hsl(var(--border))] bg-[hsl(var(--muted))]/20">
           <button
             type="button"
-            onClick={() => setTab("car")}
+            onClick={() => handleTabChange("car")}
             className={cn(
-              "flex flex-1 items-center justify-center gap-2 px-4 py-4 text-sm font-bold transition sm:text-base",
+              "flex flex-1 min-w-[120px] items-center justify-center gap-2 px-4 py-3.5 text-xs sm:text-sm font-bold transition",
               tab === "car"
-                ? "bg-brand-600 text-white"
-                : "bg-[hsl(var(--muted))]/50 text-[hsl(var(--muted-foreground))] hover:bg-[hsl(var(--muted))]"
+                ? "bg-brand-600 text-white shadow-sm"
+                : "text-[hsl(var(--muted-foreground))] hover:bg-[hsl(var(--muted))]"
             )}
           >
-            <Car size={18} />
+            <Car size={16} />
             Car Battery
           </button>
           <button
             type="button"
-            onClick={() => setTab("inverter")}
+            onClick={() => handleTabChange("scooty")}
             className={cn(
-              "flex flex-1 items-center justify-center gap-2 px-4 py-4 text-sm font-bold transition sm:text-base",
-              tab === "inverter"
-                ? "bg-brand-600 text-white"
-                : "bg-[hsl(var(--muted))]/50 text-[hsl(var(--muted-foreground))] hover:bg-[hsl(var(--muted))]"
+              "flex flex-1 min-w-[120px] items-center justify-center gap-2 px-4 py-3.5 text-xs sm:text-sm font-bold transition",
+              tab === "scooty"
+                ? "bg-brand-600 text-white shadow-sm"
+                : "text-[hsl(var(--muted-foreground))] hover:bg-[hsl(var(--muted))]"
             )}
           >
-            <Zap size={18} />
+            <span>🛵</span>
+            Scooty Battery
+          </button>
+          <button
+            type="button"
+            onClick={() => handleTabChange("bike")}
+            className={cn(
+              "flex flex-1 min-w-[120px] items-center justify-center gap-2 px-4 py-3.5 text-xs sm:text-sm font-bold transition",
+              tab === "bike"
+                ? "bg-brand-600 text-white shadow-sm"
+                : "text-[hsl(var(--muted-foreground))] hover:bg-[hsl(var(--muted))]"
+            )}
+          >
+            <span>🏍️</span>
+            Bike Battery
+          </button>
+          <button
+            type="button"
+            onClick={() => handleTabChange("inverter")}
+            className={cn(
+              "flex flex-1 min-w-[120px] items-center justify-center gap-2 px-4 py-3.5 text-xs sm:text-sm font-bold transition",
+              tab === "inverter"
+                ? "bg-brand-600 text-white shadow-sm"
+                : "text-[hsl(var(--muted-foreground))] hover:bg-[hsl(var(--muted))]"
+            )}
+          >
+            <Zap size={16} />
             Inverter Battery
+          </button>
+          <button
+            type="button"
+            onClick={() => handleTabChange("truck")}
+            className={cn(
+              "flex flex-1 min-w-[120px] items-center justify-center gap-2 px-4 py-3.5 text-xs sm:text-sm font-bold transition",
+              tab === "truck"
+                ? "bg-brand-600 text-white shadow-sm"
+                : "text-[hsl(var(--muted-foreground))] hover:bg-[hsl(var(--muted))]"
+            )}
+          >
+            <Truck size={16} />
+            Commercial
           </button>
         </div>
 
         {/* Form */}
         <div className="p-5 sm:p-6">
-          {tab === "car" ? (
+          {tab !== "inverter" ? (
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               <div>
                 <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-[hsl(var(--muted-foreground))]">
-                  Select Manufacturer
+                  Select {tab === "scooty" ? "Scooty Brand" : tab === "bike" ? "Bike Brand" : tab === "truck" ? "Truck Make" : "Car Manufacturer"}
                 </label>
                 <select
                   value={make}
@@ -90,8 +172,8 @@ export function BatteryFinder() {
                   }}
                   className="select-field"
                 >
-                  <option value="">All Manufacturers</option>
-                  {carMakes.map((m) => (
+                  <option value="">All Brands / Makes</option>
+                  {makesForTab.map((m) => (
                     <option key={m} value={m}>{m}</option>
                   ))}
                 </select>
@@ -107,7 +189,7 @@ export function BatteryFinder() {
                   className="select-field disabled:opacity-50"
                 >
                   <option value="">All Models</option>
-                  {models.map((m) => (
+                  {modelsForMake.map((m) => (
                     <option key={m} value={m}>{m}</option>
                   ))}
                 </select>
@@ -200,10 +282,10 @@ export function BatteryFinder() {
 
           <p className="mt-4 text-center text-xs text-[hsl(var(--muted-foreground))]">
             Not sure which battery fits?{" "}
-            <a href={`tel:${process.env.NEXT_PUBLIC_BUSINESS_PHONE || "+919876543210"}`} className="font-semibold text-brand-600 hover:underline">
-              Call our experts
+            <a href={`tel:${process.env.NEXT_PUBLIC_BUSINESS_PHONE || "+919325417265"}`} className="font-semibold text-brand-600 hover:underline">
+              Call our Nagpur battery experts
             </a>{" "}
-            — we&apos;ll find the right match in minutes.
+            — free fitment and doorstep battery testing within 45 minutes.
           </p>
         </div>
       </div>

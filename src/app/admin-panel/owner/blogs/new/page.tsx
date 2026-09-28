@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AdminField, AdminFormActions, AdminPageHeader } from "@/components/admin/admin-ui";
+import { CloudinaryUpload } from "@/components/admin/cloudinary-upload";
 
 export default function NewBlogPage() {
   const router = useRouter();
@@ -42,7 +43,13 @@ export default function NewBlogPage() {
         <AdminField label="Title" value={form.title} onChange={(v) => { set("title", v); set("slug", v.toLowerCase().replace(/[^a-z0-9]+/g, "-")); }} required />
         <AdminField label="Slug" value={form.slug} onChange={(v) => set("slug", v)} required />
         <AdminField label="Excerpt" value={form.excerpt} onChange={(v) => set("excerpt", v)} />
-        <AdminField label="Cover Image URL" value={form.coverImage} onChange={(v) => set("coverImage", v)} />
+        <CloudinaryUpload
+          label="Cover Image"
+          value={form.coverImage}
+          onChange={(url) => set("coverImage", url)}
+          folder="blogs"
+          helperText="Upload blog cover image."
+        />
         <AdminField label="Section Heading" value={form.sectionHeading} onChange={(v) => set("sectionHeading", v)} />
         <div>
           <label className="mb-1 block text-xs font-bold uppercase text-[hsl(var(--muted-foreground))]">Section Body</label>

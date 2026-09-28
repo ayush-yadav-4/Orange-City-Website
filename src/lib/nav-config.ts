@@ -21,10 +21,13 @@ export const mainNav = [
     label: "Categories",
     dropdown: [
       { href: categorySlugUrl("car-batteries"), label: "Car Batteries" },
+      { href: categorySlugUrl("scooty-batteries"), label: "Scooty Batteries" },
+      { href: categorySlugUrl("two-wheeler-battery"), label: "Bike Batteries" },
       { href: categorySlugUrl("inverter-batteries"), label: "Inverter Batteries" },
       { href: categorySlugUrl("inverter-home-ups"), label: "Inverter & Home UPS" },
-      { href: categorySlugUrl("two-wheeler-battery"), label: "Two Wheeler Battery" },
-      { href: categorySlugUrl("heavy-engine-batteries"), label: "Heavy Engine Batteries" },
+      { href: categorySlugUrl("heavy-engine-batteries"), label: "Commercial & Truck" },
+      { href: categorySlugUrl("tractor-agri"), label: "Tractor & Agri" },
+      { href: categorySlugUrl("erickshaw"), label: "E-Rickshaw & 3W" },
     ],
   },
   { href: "/lithium-battery", label: "Lithium Battery" },
@@ -34,9 +37,12 @@ export const mainNav = [
 
 export const footerShop = [
   { href: categorySlugUrl("car-batteries"), label: "Car Batteries" },
+  { href: categorySlugUrl("scooty-batteries"), label: "Scooty Batteries" },
   { href: categorySlugUrl("two-wheeler-battery"), label: "Bike Batteries" },
   { href: categorySlugUrl("inverter-batteries"), label: "Inverter Batteries" },
   { href: categorySlugUrl("heavy-engine-batteries"), label: "Truck Batteries" },
+  { href: categorySlugUrl("tractor-agri"), label: "Tractor Batteries" },
+  { href: categorySlugUrl("erickshaw"), label: "E-Rickshaw Batteries" },
 ];
 
 export const footerResources = [

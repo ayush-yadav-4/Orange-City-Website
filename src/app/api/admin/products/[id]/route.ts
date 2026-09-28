@@ -18,6 +18,8 @@ export async function GET(_req: Request, { params }: Params) {
   return NextResponse.json(product);
 }
 
+import { revalidateSiteContent } from "@/lib/content/revalidate";
+
 export async function PUT(req: Request, { params }: Params) {
   if (!(await isAdminAuthenticated())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -66,6 +68,9 @@ export async function PUT(req: Request, { params }: Params) {
     },
     include: { brand: true, compatibilities: true },
   });
+
+  revalidateSiteContent();
+
   return NextResponse.json(product);
 }
 
@@ -79,6 +84,9 @@ export async function PATCH(req: Request, { params }: Params) {
     data: { active: body.active },
     include: { brand: true },
   });
+
+  revalidateSiteContent();
+
   return NextResponse.json(product);
 }
 
@@ -87,5 +95,8 @@ export async function DELETE(_req: Request, { params }: Params) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   await prisma.product.delete({ where: { id: params.id } });
+
+  revalidateSiteContent();
+
   return NextResponse.json({ ok: true });
 }

@@ -17,16 +17,22 @@ export async function GET(req: Request) {
       slug: true,
       category: true,
       capacityAh: true,
+      warrantyMonths: true,
       mrp: true,
       priceWithExchange: true,
+      priceWithoutExchange: true,
+      stockStatus: true,
       active: true,
       images: true,
       brand: { select: { name: true, slug: true } },
+      compatibilities: { select: { vehicleMake: true, vehicleModel: true } },
     },
     orderBy: { updatedAt: "desc" },
   });
   return NextResponse.json(products);
 }
+
+import { revalidateSiteContent } from "@/lib/content/revalidate";
 
 export async function POST(req: Request) {
   if (!(await isAdminAuthenticated())) {
@@ -73,5 +79,8 @@ export async function POST(req: Request) {
     },
     include: { brand: true, compatibilities: true },
   });
+
+  revalidateSiteContent();
+
   return NextResponse.json(product);
 }

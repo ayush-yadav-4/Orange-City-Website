@@ -1,7 +1,7 @@
 export function SameDayDeliveryBar() {
   return (
     <div
-      className="border-b border-yellow-300/50 bg-yellow-50 dark:bg-yellow-950/40"
+      className="relative z-10 border-b border-yellow-300/50 bg-yellow-50 dark:bg-yellow-950/40"
       role="status"
       aria-label="Same day delivery in Nagpur — order before 6 PM"
     >

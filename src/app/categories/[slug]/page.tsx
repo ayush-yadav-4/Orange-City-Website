@@ -1,12 +1,42 @@
-import { notFound, redirect } from "next/navigation";
+import { Suspense } from "react";
+import { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { getContent, productToCardData } from "@/lib/content/store";
 import { categoryMeta } from "@/lib/marketplace-data";
-import { categoryFilterUrl } from "@/lib/marketplace-url";
+import { CategoryVehicleBrowser } from "@/components/category-vehicle-browser";
+import { CatalogSkeleton } from "@/components/catalog-skeleton";
 
 type Props = { params: { slug: string } };
 
-/** Fast redirect — single marketplace page handles all filters client-side */
-export default function CategoryPage({ params }: Props) {
+export const revalidate = 120;
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const meta = categoryMeta[params.slug];
+  if (!meta) {
+    return { title: "Category Not Found | Orange City Batteries" };
+  }
+  return {
+    title: `${meta.title} in Nagpur — Doorstep Fitment | Orange City Batteries`,
+    description: meta.description,
+  };
+}
+
+export default async function CategoryPage({ params }: Props) {
   const meta = categoryMeta[params.slug];
   if (!meta) notFound();
-  redirect(categoryFilterUrl(meta.category));
+
+  const content = await getContent();
+  const products = content.products.map((p) => productToCardData(p, content.brands));
+
+  return (
+    <div className="container-page py-8 sm:py-12">
+      <Suspense fallback={<CatalogSkeleton />}>
+        <CategoryVehicleBrowser
+          initialCategory={meta.category}
+          products={products}
+          vehicleModels={content.vehicleModels}
+        />
+      </Suspense>
+    </div>
+  );
 }
